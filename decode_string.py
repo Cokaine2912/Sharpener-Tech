@@ -16,3 +16,36 @@ def decodeString(self, s: str) -> str:
                 stack.pop()
             stack.append(int(times) * piece)
     return "".join(stack)
+
+
+
+
+# class Solution:
+#     def decodeString(self, s: str) -> str:
+#         stack = []
+#         for ele in s :
+#             if ele != "]" :
+#                 stack.append(ele)
+#             else :
+#                 piece = ""
+#                 while stack[-1] != "[" :
+#                     piece = stack.pop() + piece
+#                 stack.pop()
+#                 num = ""
+#                 while stack and stack[-1].isnumeric() :
+#                     num = stack.pop() + num
+#                 stack.append(int(num) * piece)
+#         return "".join(stack)
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# sample = "3[ab2[xy]]"
+# obj = Solution()
+# ans = obj.decodeString(sample)
+# print(ans)
+# 
+
