@@ -12,7 +12,7 @@ module.exports = class Product {
   save() {
     // products.push(this);
     const p = path.join(rootDir, "../Task6/data/products.json");
-    console.log("TO CHECK THIS !!!!!!!", p);
+
     fs.readFile(p, (err, fileContent) => {
       let products = [];
       if (!err) {
