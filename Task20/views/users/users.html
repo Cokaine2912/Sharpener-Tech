@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+  </head>
+  <body style="margin: 5px">
+    <h1>Booking Appointment</h1>
+
+    <h4>Enter Customer Details</h4>
+    <br />
+    <form onsubmit="SUBMIT(event)">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" /><br /><br />
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required /><br /><br />
+      <label for="phone">Phone No</label>
+      <input type="tel" name="phone" id="phone" /><br /><br />
+      <button type="submit" id="sub">Submit</button>
+    </form>
+    <hr />
+    <ul></ul>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <script>
+    function SUBMIT(event) {
+      event.preventDefault();
+      console.log("Working !");
+
+      let user_data = {
+        username: event.target.username.value,
+        email: event.target.email.value,
+        phone: event.target.phone.value,
+      };
+
+      axios
+        .post("/post-form", user_data)
+        .then((op) => {
+          console.log("Check the op", op);
+          show(user_data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    function show(ob) {
+      const string = `${ob.username}-${ob.email}-${ob.phone}`;
+
+      const newli = document.createElement("li");
+
+      newli.id = ob.phone;
+
+      const del_but = document.createElement("button");
+      del_but.id = "db";
+      del_but.className = "db";
+      del_but.style.margin = "2px";
+      del_but.style.backgroundColor = "orangered";
+      const del_text = document.createTextNode("Delete");
+
+      // EDIT Button
+
+      const edit_but = document.createElement("button");
+      edit_but.id = "eb";
+      edit_but.className = "eb";
+      const edit_text = document.createTextNode("Edit");
+
+      del_but.appendChild(del_text);
+      edit_but.appendChild(edit_text);
+
+      const newlitext = document.createTextNode(string);
+      newli.appendChild(newlitext);
+      newli.appendChild(del_but);
+      newli.appendChild(edit_but);
+      // console.log(newli)
+
+      const list = document.querySelector("ul");
+      list.appendChild(newli);
+    }
+
+    // getting existing data
+
+    let k = axios.get(`/all-users`);
+    k.then((res) => {
+      for (let ele of res.data) {
+        show(ele);
+      }
+    });
+
+    const listings = document.querySelector("ul");
+
+    if (listings) {
+      listings.addEventListener("click", function (event) {
+        if (event.target.classList.contains("db")) {
+          const todel = event.target.parentElement;
+
+          const todel_id = todel.id;
+
+          const text = todel.textContent;
+          const email = text.split("-")[1].trim();
+          listings.removeChild(todel);
+
+          axios
+            .post("/delete-product", { ID: todel_id })
+            .then((op) => {
+              console.log(op);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+    }
+  </script>
+</html>
