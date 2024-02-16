@@ -7,6 +7,9 @@ const bodyParser = require("body-parser");
 const errorController = require("./controllers/error");
 const sequelize = require("./util/database");
 
+const Product = require("./models/product");
+const ShopUser = require("./models/shop_user");
+
 const app = express();
 
 app.set("view engine", "ejs");
@@ -17,8 +20,17 @@ const shopRoutes = require("./routes/shop");
 const userRoutes = require("./routes/user");
 const expenseRoutes = require("./routes/expense");
 
-app.use(bodyParser.json({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use((req, res, next) => {
+  ShopUser.findByPk(1)
+    .then((shopUser) => {
+      req.shopUser = shopUser;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
@@ -28,10 +40,23 @@ app.use("/expense", expenseRoutes);
 app.use(cors());
 // app.use(errorController.get404);
 
+Product.belongsTo(ShopUser, { constraints: true, onDelete: "CASCADE" });
+ShopUser.hasMany(Product);
+
 sequelize
   .sync()
   .then((result) => {
+    return ShopUser.findByPk(1);
+  })
+  .then((shopUser) => {
+    if (!shopUser) {
+      return ShopUser.create({ name: "Miachel", email: "Scott@gmail.com" });
+    }
+    return shopUser;
     // console.log(result);
+  })
+  .then((shopUser) => {
+    // console.log(shopUser);
     app.listen(5000);
   })
   .catch((err) => {
