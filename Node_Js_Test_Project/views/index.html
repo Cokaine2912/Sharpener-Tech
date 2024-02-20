@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../public/css/styles.css" />
+    <style>
+      .rating {
+        display: inline-block;
+        unicode-bidi: bidi-override;
+        direction: rtl;
+      }
+
+      .rating input {
+        display: none;
+      }
+
+      .rating label {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+      }
+
+      .rating input:checked ~ label {
+        color: #ffcc00;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h2 class="the-header">Add Company Review</h2>
+    </header>
+    <main>
+      <div id="form-1" class="forms">
+        <form onsubmit="handlePosting(event)">
+          <label for="company">Company Name :</label>
+          <input type="text" id="company" name="company" /><br /><br />
+          <label for="pros">Pros :</label>
+          <textarea
+            type="text"
+            id="pros"
+            name="pros"
+            rows="5"
+            cols="25"
+          ></textarea>
+          <br /><br />
+          <label for="cons">Cons :</label>
+          <textarea
+            type="text"
+            id="cons"
+            name="cons"
+            rows="5"
+            cols="25"
+          ></textarea
+          ><br /><br />
+          <label for="rating">Rating :</label>
+          <div class="rating" id="rating">
+            <input type="radio" id="star5" name="rating" value="5" />
+            <label for="star5">&#9733;</label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4">&#9733;</label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3">&#9733;</label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2">&#9733;</label>
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1">&#9733;</label>
+          </div>
+          <br /><br />
+          <button type="submit">Submit Review</button>
+        </form>
+      </div>
+      <hr />
+      <div id="form-2">
+        <form onsubmit="handleFind(event)">
+          <input
+            type="text"
+            name="findname"
+            id="findname"
+            placeholder="Enter Company Name "
+          />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div id="display" class="display">
+        <ul id="display-review"></ul>
+      </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="../public/js/script.js"></script>
+  </body>
+</html>
