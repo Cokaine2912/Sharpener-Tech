@@ -1,7 +1,47 @@
-
-.the-header{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+html{
+    height: 100%;
+}
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #d7bc8b;
+    height: 100%;
+    
+}
+#main-header{
+    background-color: #006400;
+    padding: 1px;
+    color: gold;
     text-align: center;
-    border: 1px solid grey;
-    padding: 10px;
-} 
+    font-size: 20px;
+}
+#write{
+    font-size: 20px;
+}
+form{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#form-1{
+    padding :3px;
+    padding-top: 7px;
+    border: 3px solid black;
+    align-self: center;
+}
+#posting-form{
+    border: 3px solid blueviolet;
+    width: 70%;
+
+}
+#submit-review,#company-search{
+    background-color: grey;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 3px;
+}
+ul{
+    border: 1px solid black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#display-company-name{
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+}

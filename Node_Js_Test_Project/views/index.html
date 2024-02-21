@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="../public/css/styles.css" />
+    <link rel="stylesheet" href="../public/css/main.css" />
     <style>
       .rating {
         display: inline-block;
@@ -20,7 +20,7 @@
         display: inline-block;
         cursor: pointer;
         font-size: 30px;
-        color: #ccc;
+        color: white;
       }
 
       .rating input:checked ~ label {
@@ -29,30 +29,32 @@
     </style>
   </head>
   <body>
-    <header>
-      <h2 class="the-header">Add Company Review</h2>
+    <header id="main-header">
+      <h2 class="the-header">Company Reviews</h2>
     </header>
     <main>
+      
       <div id="form-1" class="forms">
-        <form onsubmit="handlePosting(event)">
+        <form onsubmit="handlePosting(event)" id="posting-form">
+            <h5 id="write" style="text-align: center;">📝Write a Review</h5>
           <label for="company">Company Name :</label>
           <input type="text" id="company" name="company" /><br /><br />
-          <label for="pros">Pros :</label>
+          <label for="pros">Pros :</label><br>
           <textarea
             type="text"
             id="pros"
             name="pros"
             rows="5"
-            cols="25"
+            cols="45"
           ></textarea>
           <br /><br />
-          <label for="cons">Cons :</label>
+          <label for="cons" >Cons :</label><br>
           <textarea
             type="text"
             id="cons"
             name="cons"
             rows="5"
-            cols="25"
+            cols="45"
           ></textarea
           ><br /><br />
           <label for="rating">Rating :</label>
@@ -69,10 +71,11 @@
             <label for="star1">&#9733;</label>
           </div>
           <br /><br />
-          <button type="submit">Submit Review</button>
+          <button type="submit" id="submit-review" >Post Review</button>
         </form>
       </div>
       <hr />
+      <h5 id="search">🔍Search Reviews</h5>
       <div id="form-2">
         <form onsubmit="handleFind(event)">
           <input
@@ -81,11 +84,12 @@
             id="findname"
             placeholder="Enter Company Name "
           />
-          <button type="submit">Search</button>
+          <button type="submit" id="company-search">Search</button>
         </form>
-      </div>
-      <div id="display" class="display">
-        <ul id="display-review"></ul>
+        <div id="display-company-name"></div>
+        <div id="display" class="display">
+          <ul id="display-review"></ul>
+        </div>
       </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
