@@ -21,15 +21,19 @@ exports.postUserLogin = async (req, res, next) => {
 
   const findings = await User.findAll({ where: { email: email } });
 
-  try {
-    if (findings.length === 0) {
-      res.json({ error: "Email not Found" });
-    } else {
-      if (findings[0].password !== password) {
-        res.json({ error: "Password doesn't match" });
-      }
+
+  if (findings.length === 0) {
+    // res.json({ error: "Email not Found" });
+    res.status(404).send("User Not Found !")
+  } else {
+    if (findings[0].password !== password) {
+      // res.json({ error: "Password doesn't match" });
+      res.status(401).send("User Not Authorized !")
     }
-  } catch (err) {
-    console.log(err);
+    else {
+        // res.json({success : "Login Successful !"})
+        res.send("User Login Successful !")
+    }
   }
+  
 };
