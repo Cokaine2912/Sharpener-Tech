@@ -15,7 +15,7 @@ html{
 
 }
 #login-form{
-    border: 3px solid violet;
+    border: 3px solid #0099ff;
     border-radius: 7px;
     text-align: center;
     margin: auto;
@@ -24,11 +24,22 @@ html{
 #login-button{
     font-family: 'Courier New', Courier, monospace;
     border-radius: 5px;
-    background-color: rgb(198, 198, 198);
+    font-weight: 600;
+    
 }
 #login-heading{
     text-decoration: underline;
 }
 #new-signup{
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#small-signup-button{
+    font-size: 14px;
+    margin-left: 5px;
+    padding: 1px 3px;
+    font-weight: 600;
+    
 }

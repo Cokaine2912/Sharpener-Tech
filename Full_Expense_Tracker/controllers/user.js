@@ -1,7 +1,20 @@
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
 
-exports.postNewUser = (req, res, next) => {
-  User.create(req.body)
+function HASHING(password, saltrounds) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltrounds).then((hash) => {
+      resolve(hash);
+    });
+  });
+}
+
+exports.postNewUser = async (req, res, next) => {
+  const new_user = req.body;
+  const saltrounds = 10;
+  const new_pass = await HASHING(new_user.password, saltrounds);
+  new_user.password = new_pass;
+  User.create(new_user)
     .then((op) => {
       res.json(op);
     })
@@ -14,6 +27,14 @@ exports.postNewUser = (req, res, next) => {
     });
 };
 
+function DEHASHING(password, hash) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, hash).then((op) => {
+      resolve(op);
+    });
+  });
+}
+
 exports.postUserLogin = async (req, res, next) => {
   const obj = req.body;
   const email = obj.email;
@@ -21,19 +42,16 @@ exports.postUserLogin = async (req, res, next) => {
 
   const findings = await User.findAll({ where: { email: email } });
 
-
   if (findings.length === 0) {
-    // res.json({ error: "Email not Found" });
-    res.status(404).send("User Not Found !")
+    res.status(404).json({error : "User Not Found !"});
   } else {
-    if (findings[0].password !== password) {
-      // res.json({ error: "Password doesn't match" });
-      res.status(401).send("User Not Authorized !")
-    }
-    else {
-        // res.json({success : "Login Successful !"})
-        res.send("User Login Successful !")
+    const hash = findings[0].password;
+    const dehash = await DEHASHING(password, hash);
+    // console.log(dehash);
+    if (!dehash) {
+      res.status(400).json({error : "User Not Authorized !"});
+    } else {
+      res.json({success : "User Login Successful !"});
     }
   }
-  
 };
