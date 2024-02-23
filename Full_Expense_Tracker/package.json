@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.9.1",
+    "save": "^2.9.0",
+    "sequelize": "^6.37.1"
+  },
+  "name": "full_expense_tracker",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Mai hi hu re",
+  "license": "ISC",
+  "description": ""
+}
