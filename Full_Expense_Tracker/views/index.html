@@ -19,6 +19,13 @@
   </head>
   <body>
     <main>
+      <!-- <div id="image-div">
+        <img
+          src="../expt/mfg-clickspeeder.png"
+          alt="Expense Tracker"
+          id="expense-tracker-expt"
+        />
+      </div> -->
       <h3>Create New Account</h3>
       <br />
       <form onsubmit="signupForm(event)" id="signup-form">
@@ -49,12 +56,26 @@
           required
           placeholder="Password"
         /><br /><br />
-        <button type="submit" id="signup-button">Sign Up</button>
+        <button
+          type="submit"
+          id="signup-button"
+          class="btn btn-outline-primary"
+        >
+          Sign Up
+        </button>
       </form>
       <div id="error-div"></div>
+      <br />
+      <div id="existing-user">
+        Already a user ?
+        <a href="./login.html"
+          ><button id="login-button" class="btn btn-outline-primary">
+            Login
+          </button></a
+        >
+      </div>
     </main>
-    <br>
-    <div id="existing-user">Already a user ? <a href="./login.html"><button id="login-button">Login</button></a></div>
+    <br />
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 

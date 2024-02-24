@@ -9,7 +9,6 @@ function signupForm(event) {
   axios
     .post("http://localhost:5000/user/signup", obj)
     .then((op) => {
-      // console.log(op.data);
       if (op.data.error) {
         const fields = document.getElementsByClassName("ip-fields");
 

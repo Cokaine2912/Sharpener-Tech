@@ -7,9 +7,14 @@ function Login(event) {
   axios
     .post("http://localhost:5000/user/login", obj)
     .then((op) => {
-      console.log(op);
+      console.log(op.data);
+      if (op.data.success){
+        window.location.href = "./expense.html";
+      }
     })
     .catch((err) => {
-      console.log(err);
+      
+      console.log(err.response.data);
+      alert(err.response.data.error)
     });
 }

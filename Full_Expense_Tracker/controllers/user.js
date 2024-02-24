@@ -1,5 +1,9 @@
+// All the imports ##############################################################################
+
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+
+//  The required functions ##############################################################################
 
 function HASHING(password, saltrounds) {
   return new Promise((resolve, reject) => {
@@ -9,6 +13,15 @@ function HASHING(password, saltrounds) {
   });
 }
 
+function DEHASHING(password, hash) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, hash).then((op) => {
+      resolve(op);
+    });
+  });
+}
+
+// All the exports ##############################################################################
 exports.postNewUser = async (req, res, next) => {
   const new_user = req.body;
   const saltrounds = 10;
@@ -27,14 +40,6 @@ exports.postNewUser = async (req, res, next) => {
     });
 };
 
-function DEHASHING(password, hash) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash).then((op) => {
-      resolve(op);
-    });
-  });
-}
-
 exports.postUserLogin = async (req, res, next) => {
   const obj = req.body;
   const email = obj.email;
@@ -43,15 +48,15 @@ exports.postUserLogin = async (req, res, next) => {
   const findings = await User.findAll({ where: { email: email } });
 
   if (findings.length === 0) {
-    res.status(404).json({error : "User Not Found !"});
+    res.status(404).json({ error: "User Not Found !" });
   } else {
     const hash = findings[0].password;
     const dehash = await DEHASHING(password, hash);
     // console.log(dehash);
     if (!dehash) {
-      res.status(400).json({error : "User Not Authorized !"});
+      res.status(400).json({ error: "User Not Authorized !" });
     } else {
-      res.json({success : "User Login Successful !"});
+      res.json({ success: "User Login Successful !" });
     }
   }
 };

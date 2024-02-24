@@ -1,0 +1,11 @@
+html,body{
+    margin :0;
+    padding: 0;
+}
+html{
+    height: 100vh;
+    border: 3px solid brown;
+}
+.list-item{
+    padding: 5px;
+}

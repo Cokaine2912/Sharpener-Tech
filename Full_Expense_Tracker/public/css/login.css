@@ -8,14 +8,11 @@ body,html{
 }
 
 html{
-    height: 85vh;
+    height: 100vh;
 }
-#login-form-div{
-    margin: auto;
 
-}
 #login-form{
-    border: 3px solid #0099ff;
+    border: 3px solid rgba(0, 114, 176, 0.696);
     border-radius: 7px;
     text-align: center;
     margin: auto;
@@ -27,14 +24,18 @@ html{
     font-weight: 600;
     
 }
+
+
 #login-heading{
     text-decoration: underline;
+    font-weight: 600;
 }
 #new-signup{
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: 550;
 }
 #small-signup-button{
     font-size: 14px;

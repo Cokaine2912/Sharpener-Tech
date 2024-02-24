@@ -1,7 +1,7 @@
 body{
-    height: 80vh;
+    height: 100vh;
     background-color: whitesmoke;
-    display: inline;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -10,11 +10,18 @@ html,body{
     padding: 0;
     font-family:'Courier New', Courier, monospace;
 }
-
+#image-div{
+    display: flex;
+    justify-content: center;
+}
+#expense-tracker-expt{
+    width: 90%;
+}
 h3{
     text-decoration: underline;
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
+    font-weight: 600;
 }
 input{
     border-radius: 3px;
@@ -28,7 +35,7 @@ main{
     
 }
 #signup-form{
-    border: 3px solid rgb(0, 176, 176);
+    border: 3px solid rgba(0, 114, 176, 0.696);
     border-radius: 7px;
     width: auto;
     margin: 0 auto;
@@ -39,7 +46,8 @@ main{
 #signup-button{
     font-family: 'Courier New', Courier, monospace;
     border-radius: 5px;
-    background-color: rgb(198, 198, 198);
+    font-weight: 600;
+
 }
 
 #signup-button:hover{
@@ -52,12 +60,14 @@ main{
 }
 #existing-user{
     text-align: center;
+    font-weight: 550;
     
 }
 #login-button{
-    font-size: 10px;
     margin: auto;
-    font-family: 'Courier New', Courier, monospace;
     border-radius: 5px;
-    background-color: rgb(198, 198, 198);
+    font-size: 14px;
+    margin-left: 5px;
+    padding: 1px 3px;
+    font-weight: 600;
 }
