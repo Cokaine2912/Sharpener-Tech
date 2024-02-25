@@ -1,5 +1,8 @@
 async function ONLOAD() {
-  const all = await axios.get("http://localhost:5000/expense/allexpensedata");
+  const token = localStorage.getItem("token");
+  const all = await axios.get("http://localhost:5000/expense/allexpensedata", {
+    headers: { Authorization: token },
+  });
 
   for (let i = 0; i < all.data.length; i++) {
     DISPLAY(all.data[i]);
@@ -31,10 +34,12 @@ function ADDEXPENSE(event) {
     amount: event.target.amount.value,
     description: event.target.description.value,
     category: event.target.category.value,
+    token: localStorage.getItem("token"),
   };
   axios
     .post("http://localhost:5000/expense/addexpense", obj)
     .then((op) => {
+      console.log(op.data);
       DISPLAY(op.data);
     })
     .catch((err) => {
@@ -48,7 +53,9 @@ if (ExpenseList) {
   ExpenseList.addEventListener("click", async function (event) {
     if (event.target.classList.contains("db")) {
       const todel = event.target.parentElement;
-      await axios.delete(`http://localhost:5000/expense/deleteexpense/${todel.id}`)
+      await axios.delete(
+        `http://localhost:5000/expense/deleteexpense/${todel.id}`
+      );
       ExpenseList.removeChild(todel);
     }
   });

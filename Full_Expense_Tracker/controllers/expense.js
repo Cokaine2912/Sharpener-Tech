@@ -6,6 +6,8 @@ const Expense = require("../models/expense");
 
 // All the exports ##############################################################################
 exports.getAllExpenseData = (req, res, next) => {
+  //   console.log(req.headers);
+  console.log(req.body);
   Expense.findAll()
     .then((op) => {
       res.json(op);

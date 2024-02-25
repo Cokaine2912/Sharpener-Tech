@@ -15,10 +15,16 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Sofia"
+    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
     <link rel="stylesheet" href="../public/css/expense.css" />
   </head>
   <body>
-    <div id="expense-form-div">
+    <div id="big-div">
+      <div id="expense-form-div">
         <form id="expense-form" onsubmit="ADDEXPENSE(event)">
           <input
             type="number"
@@ -41,15 +47,18 @@
             <option value="petrol">Petrol</option>
             <option value="salary">Salary</option>
           </select>
-          <br><br>
-          <button id="add-expense-button">Add Expense</button>
+          <br /><br />
+          <button id="add-expense-button" class="btn btn-outline-primary">
+            Add Expense
+          </button>
         </form>
       </div>
-    
-      <hr>
+
+      <hr />
       <div id="display-div">
         <ul id="expense-list"></ul>
       </div>
+    </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 

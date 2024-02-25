@@ -2,7 +2,7 @@
 
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken")
 //  The required functions ##############################################################################
 
 function HASHING(password, saltrounds) {
@@ -19,6 +19,12 @@ function DEHASHING(password, hash) {
       resolve(op);
     });
   });
+}
+
+
+const secretKey = "feiofheofgepegje"
+function generateAccessToken(id,name) {
+    return jwt.sign({userId : id , name: name},secretKey)
 }
 
 // All the exports ##############################################################################
@@ -44,6 +50,7 @@ exports.postUserLogin = async (req, res, next) => {
   const obj = req.body;
   const email = obj.email;
   const password = obj.password;
+  
 
   const findings = await User.findAll({ where: { email: email } });
 
@@ -53,10 +60,12 @@ exports.postUserLogin = async (req, res, next) => {
     const hash = findings[0].password;
     const dehash = await DEHASHING(password, hash);
     // console.log(dehash);
+
+    const token = generateAccessToken(findings[0].id,findings[0].username)
     if (!dehash) {
       res.status(400).json({ error: "User Not Authorized !" });
     } else {
-      res.json({ success: "User Login Successful !" });
+      res.status(200).json({ success: "User Login Successful !" ,token  : token});
     }
   }
 };

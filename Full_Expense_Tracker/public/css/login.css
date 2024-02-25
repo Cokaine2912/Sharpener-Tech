@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Trirong');
+
+
 body,html{
     margin: 0;
     padding:0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Trirong', sans-serif;
 }
 
 html{
@@ -12,23 +15,23 @@ html{
 }
 
 #login-form{
-    border: 3px solid rgba(0, 114, 176, 0.696);
+    border: 4px solid rgba(0, 114, 176, 0.696);
     border-radius: 7px;
     text-align: center;
     margin: auto;
-    padding: 7px;
+    padding: 10px;
 }
 #login-button{
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Trirong', sans-serif;
     border-radius: 5px;
     font-weight: 600;
     
 }
 
-
 #login-heading{
     text-decoration: underline;
     font-weight: 600;
+    text-align: center;
 }
 #new-signup{
     text-align: center;
