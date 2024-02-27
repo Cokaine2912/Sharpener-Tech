@@ -7,7 +7,7 @@ function Login(event) {
   axios
     .post("http://localhost:5000/user/login", obj)
     .then((op) => {
-      console.log(op.data);
+      // console.log(op.data);
       let token = op.data.token;
       if (op.data.success) {
         localStorage.setItem("token", token);
