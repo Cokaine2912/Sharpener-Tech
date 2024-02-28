@@ -24,14 +24,20 @@
       href="https://fonts.googleapis.com/css?family=Trirong"
     />
     <link rel="stylesheet" href="../public/css/newexpense.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple"
+    />
   </head>
   <body>
     <div id="logout-div">
+      <div id="if-premium" class="font-effect-shadow-multiple"></div>
       <button id="rzp-button">Get Premium</button>
       <a id="logout-link" href="./login.html">Logout</a>
     </div>
     <!-- The Form Div -->
-    <div id="expense-form-div"><!--#####  2  #####-->
+    <div id="expense-form-div">
+      <!--#####  2  #####-->
       <form id="expense-form" onsubmit="ADDEXPENSE(event)">
         <input
           type="number"
@@ -64,10 +70,14 @@
     <hr />
     <!-- The Display Div  -->
     <div id="display-div">
-      <ul id="expense-list">
+      <ul id="expense-list"></ul>
+    </div>
+    <div id="leader-board-div">
+      <ul id="leader-board-ul">
+        <li class="leader-board-li">sample 1</li>
+        <li class="leader-board-li">smaple 2</li>
       </ul>
     </div>
-
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

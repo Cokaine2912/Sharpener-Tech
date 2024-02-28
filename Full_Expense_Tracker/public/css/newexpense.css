@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple');
+
+
 html,
 body {
     margin: 0;
@@ -11,9 +14,10 @@ html {
 }
 
 #logout-div{
-    /* border: 3px solid violet; */
-    text-align: end;
+    display: flex;
+    justify-content: end;
     padding-right: 7px;
+    padding: 10px;
 }
 #logout-link{
     text-decoration: none;
@@ -57,4 +61,24 @@ html {
 #display-div{
     display: flex;
     justify-content: center;
+}
+
+#rzp-button{
+    font-family: "Trirong", serif;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 0;
+    margin-right: 10px;
+    background-color: white;
+    color: gold;
+    align-self:flex-start;
+}
+#rzp-button:hover{
+    text-decoration: underline;
+}
+#if-premium{
+    margin-right: 10px;
+    color:black;
+    
 }

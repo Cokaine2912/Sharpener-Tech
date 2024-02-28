@@ -10,11 +10,25 @@ router.get(
   authMiddleware.authenticate,
   premiumController.getPurchasePremium
 );
-// router.post(
-//   "/addexpense",
-//   authMiddleware.middleParseToken,
-//   expenseController.postAddExpense
-// );
 
+router.get(
+  "/expense/premiumness",
+  authMiddleware.authenticate,
+  premiumController.getPremiumness
+);
+
+router.post(
+  "/purchase/premium/updatetransactionstatus",
+  authMiddleware.authenticate,
+  premiumController.postUpdateTransactionstatus
+);
+
+router.post(
+  "/purchase/premium/updateFailure",
+  authMiddleware.authenticate,
+  premiumController.postUpdateFailure
+);
+
+router.get("/premium/leaderboard", premiumController.getLeaderboard);
 
 module.exports = router;

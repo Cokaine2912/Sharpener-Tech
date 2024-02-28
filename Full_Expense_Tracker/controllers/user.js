@@ -23,8 +23,8 @@ function DEHASHING(password, hash) {
 
 
 const secretKey = "feiofheofgepegje"
-function generateAccessToken(id,name) {
-    return jwt.sign({userId : id , name: name},secretKey)
+function generateAccessToken(id,name,ispremiumUser) {
+    return jwt.sign({userId : id , name: name ,premium : ispremiumUser},secretKey)
 }
 
 // All the exports ##############################################################################
@@ -61,7 +61,7 @@ exports.postUserLogin = async (req, res, next) => {
     const dehash = await DEHASHING(password, hash);
     // console.log(dehash);
 
-    const token = generateAccessToken(findings[0].id,findings[0].username)
+    const token = generateAccessToken(findings[0].id,findings[0].username,findings[0].ispremiumUser)
     if (!dehash) {
       res.status(400).json({ error: "User Not Authorized !" });
     } else {
