@@ -104,21 +104,49 @@ exports.postUpdateFailure = async (req, res, next) => {
 };
 
 exports.getLeaderboard = async (req, res, next) => {
-  const current_users = await Expense.findAll({
+  ////
+  const new_db = await User.findAll({
     attributes: [
-      "userId",
-      [sequelize.fn("SUM", sequelize.col("amount")), "totalAmount"],
+      "id",
+      "username",
+      [sequelize.fn("sum", sequelize.col("expenses.amount")), "totalExpense"],
     ],
     include: [
       {
-        model: User,
-        attributes: ["username"],
+        model: Expense,
+        attributes: [],
       },
     ],
-    group: ["userId"],
+    group: ["user.id"],
+    order: [[sequelize.literal("totalExpense"), "DESC"]],
   });
+  ////
+
+  // const other = await User.findAll({
+  //   attributes: [
+  //     "username",
+  //     [
+  //       sequelize.literal(
+  //         "(SELECT SUM(amount) FROM expenses WHERE expenses.userId = User.id)"
+  //       ),
+  //       "totalExpense",
+  //     ],
+  //   ],
+  //   order: [["totalExpense", "DESC"]],
+  // });
+  // console.log(other);
+  // const current_users = await Expense.findAll({
+  //   attributes: ["userId"],
+  //   include: [
+  //     {
+  //       model: User,
+  //       attributes: ["username"],
+  //     },
+  //   ],
+  //   group: ["userId"],
+  // });
   // console.log(current_users);
-  res.json(current_users)
+  res.json(new_db);
   // for (let i = 0; i < current_users.length; i++) {
   //   console.log(current_users[i]);
   // }

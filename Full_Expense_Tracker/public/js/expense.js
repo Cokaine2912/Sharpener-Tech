@@ -4,10 +4,29 @@ async function showLeaderBoard() {
   const leaderBoard = await axios.get(
     "http://localhost:5000/premium/leaderboard"
   );
-  console.log(leaderBoard);
+  // console.log(leaderBoard.data);
+  // leaderBoard.data.sort((a, b) => b.totalExpense - a.totalExpense);
+  for (let i = 0; i < leaderBoard.data.length; i++) {
+    display_board(leaderBoard.data[i]);
+  }
 }
-showLeaderBoard()
 
+function display_board(obj) {
+  const heading = document.getElementById("leader-board-heading");
+  heading.innerHTML = "LeaderBoard";
+  const li = document.createElement("li");
+  let totalExpense = 0;
+  if (obj.totalExpense) {
+    totalExpense = obj.totalExpense;
+  }
+
+  const li_text = document.createTextNode(
+    `${obj.username} | Total Expense : ${totalExpense}`
+  );
+  li.appendChild(li_text);
+  const leader_board_div = document.getElementById("leader-board-div");
+  leader_board_div.appendChild(li);
+}
 ///
 
 const existing_token = localStorage.getItem("token");
@@ -92,6 +111,15 @@ if (!existing_token) {
     const if_premium = document.getElementById("if-premium");
     const premium_text = document.createTextNode("Premium");
     if_premium.appendChild(premium_text);
+
+    const leader_button = document.createElement("button");
+    const leader_text = document.createTextNode("Leaderboard");
+    const button_div = document.getElementById("leader-button-div");
+
+    leader_button.appendChild(leader_text);
+    button_div.appendChild(leader_button);
+
+    leader_button.onclick = showLeaderBoard;
   }
 
   const ExpenseList = document.getElementById("expense-list");
