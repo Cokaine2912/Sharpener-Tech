@@ -1,20 +1,72 @@
-/// FUCNTIONS
+/// STATUS !
+
+let leader_board_open = false;
+
+let USERNAME = "USERNAME";
+
+//////////// FUCNTIONS ////////////////////////////////////
 
 async function showLeaderBoard() {
-  const leaderBoard = await axios.get(
-    "http://localhost:5000/premium/leaderboard"
-  );
-  // console.log(leaderBoard.data);
-  // leaderBoard.data.sort((a, b) => b.totalExpense - a.totalExpense);
-  for (let i = 0; i < leaderBoard.data.length; i++) {
-    display_board(leaderBoard.data[i]);
+  if (leader_board_open) {
+    const table_body = document.getElementById("tableBody");
+    table_body.remove();
+
+    const leader_ul = document.getElementById("leader-board-ul");
+    leader_ul.remove();
+
+    const ul = document.createElement("ul");
+    const leader_board_div = document.getElementById("leader-board-div");
+    ul.id = "leader-board-ul";
+    leader_board_div.appendChild(ul);
+    leader_board_open = false;
+    const heading = document.getElementById("leader-board-heading");
+    heading.innerHTML = "";
+  } else {
+    const leader_html = `<table id="expenseTable">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Total Expenses ($)</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Table body will be dynamically populated using JavaScript -->
+    </tbody>
+  </table>`;
+
+  /////////////////////////////////////  
+
+    const table_div = document.getElementById("table-div");
+
+    // Create a temporary div element
+    const tempDiv = document.createElement("div");
+
+    // Set the innerHTML of the temporary div to your HTML markup
+    tempDiv.innerHTML = leader_html;
+
+  /////////////////////////////////////
+
+    const table_body = document.createElement("tbody");
+    const table = document.getElementById("expenseTable");
+    table_body.id = "tableBody";
+
+    table.appendChild(table_body);
+
+    const leaderBoard = await axios.get(
+      "http://localhost:5000/premium/leaderboard"
+    );
+
+    populateTable(leaderBoard.data);
+
+    leader_board_open = true;
   }
 }
 
 function display_board(obj) {
-  const heading = document.getElementById("leader-board-heading");
-  heading.innerHTML = "LeaderBoard";
+  const ul = document.getElementById("leader-board-ul");
   const li = document.createElement("li");
+  li.className = "leader-item";
   let totalExpense = 0;
   if (obj.totalExpense) {
     totalExpense = obj.totalExpense;
@@ -24,10 +76,22 @@ function display_board(obj) {
     `${obj.username} | Total Expense : ${totalExpense}`
   );
   li.appendChild(li_text);
-  const leader_board_div = document.getElementById("leader-board-div");
-  leader_board_div.appendChild(li);
+
+  ul.appendChild(li);
 }
-///
+
+function populateTable(data) {
+  var tableBody = document.getElementById("tableBody");
+  data.forEach(function (item) {
+    var row = tableBody.insertRow();
+    row.insertCell(0).textContent = item.id;
+    row.insertCell(1).textContent = item.username;
+    row.insertCell(2).textContent =
+      item.totalExpense === null ? "0" : item.totalExpense;
+  });
+}
+
+////////////////////////////////////////////////////////////
 
 const existing_token = localStorage.getItem("token");
 
@@ -49,8 +113,14 @@ if (!existing_token) {
       resolve(bool);
     });
   }
+
   async function ONLOAD() {
     const bool = await premiumCheck();
+    USERNAME = bool.data.username;
+
+    const username_button = document.getElementById("username-dropdown");
+    const username_button_text = document.createTextNode(USERNAME);
+    username_button.appendChild(username_button_text);
     if (bool.data.premium) {
       garibsePremium();
     }
@@ -109,14 +179,17 @@ if (!existing_token) {
     const rzp_button = document.getElementById("rzp-button");
     rzp_button.remove();
     const if_premium = document.getElementById("if-premium");
+    if_premium.logo = "premium-logo";
     const premium_text = document.createTextNode("Premium");
     if_premium.appendChild(premium_text);
 
     const leader_button = document.createElement("button");
+    leader_button.id = "leader-button";
     const leader_text = document.createTextNode("Leaderboard");
     const button_div = document.getElementById("leader-button-div");
 
     leader_button.appendChild(leader_text);
+    leader_button.className = "btn btn-outline-primary";
     button_div.appendChild(leader_button);
 
     leader_button.onclick = showLeaderBoard;

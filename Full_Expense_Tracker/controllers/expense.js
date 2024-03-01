@@ -6,7 +6,6 @@ const Expense = require("../models/expense");
 
 // All the exports ##############################################################################
 exports.getAllExpenseData = (req, res, next) => {
-  //   console.log(req.headers);
   const userId = req.headers.userId;
   Expense.findAll({ where: { userId: userId } })
     .then((op) => {
@@ -18,6 +17,7 @@ exports.getAllExpenseData = (req, res, next) => {
 };
 
 exports.postAddExpense = (req, res, next) => {
+  console.log("TOTAL",req)
   Expense.create(req.body)
     .then((op) => {
       res.json(op);

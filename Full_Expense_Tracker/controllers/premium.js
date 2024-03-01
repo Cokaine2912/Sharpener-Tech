@@ -11,8 +11,11 @@ const User = require("../models/user");
 //  The required functions ##############################################################################
 let new_token = "abcd";
 const secretKey = "feiofheofgepegje";
-function generateAccessToken(id, ispremiumUser) {
-  return jwt.sign({ userId: id, premium: ispremiumUser }, secretKey);
+function generateAccessToken(id, username, ispremiumUser) {
+  return jwt.sign(
+    { userId: id, name: username, premium: ispremiumUser },
+    secretKey
+  );
 }
 // All the exports ##############################################################################
 exports.getPurchasePremium = async (req, res, next) => {
@@ -50,6 +53,7 @@ exports.getPurchasePremium = async (req, res, next) => {
 exports.postUpdateTransactionstatus = async (req, res, next) => {
   try {
     const { payment_id, order_id } = req.body;
+
     Order.findOne({ where: { orderId: order_id } }).then((order) => {
       order
         .update({ paymentId: payment_id, status: "SUCCESSFUL" })
@@ -57,7 +61,11 @@ exports.postUpdateTransactionstatus = async (req, res, next) => {
           req.user
             .update({ ispremiumUser: true })
             .then(() => {
-              new_token = generateAccessToken(order.userId, true);
+              new_token = generateAccessToken(
+                order.userId,
+                req.headers.username,
+                true
+              );
             })
             .then(() => {
               return res.status(202).json({
@@ -80,10 +88,11 @@ exports.postUpdateTransactionstatus = async (req, res, next) => {
 };
 
 exports.getPremiumness = async (req, res, next) => {
+  // console.log("Username :",req.headers.username)
   if (req.user.ispremiumUser) {
-    return res.json({ premium: true });
+    return res.json({ premium: true, username: req.headers.username });
   } else {
-    return res.json({ premium: false });
+    return res.json({ premium: false, username: req.headers.username });
   }
 };
 
