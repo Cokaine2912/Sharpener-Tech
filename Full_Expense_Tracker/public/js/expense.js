@@ -87,7 +87,7 @@ function populateTable(data) {
     row.insertCell(0).textContent = item.id;
     row.insertCell(1).textContent = item.username;
     row.insertCell(2).textContent =
-      item.totalExpense === null ? "0" : item.totalExpense;
+      item.totalExpense === null ? "0" : item.totalSpendings;
   });
 }
 
@@ -167,7 +167,6 @@ if (!existing_token) {
     axios
       .post("http://localhost:5000/expense/addexpense", obj)
       .then((op) => {
-        // console.log(op.data);
         DISPLAY(op.data);
       })
       .catch((err) => {
