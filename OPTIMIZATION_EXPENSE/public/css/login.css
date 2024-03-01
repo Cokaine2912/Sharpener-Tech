@@ -47,3 +47,10 @@ html{
     font-weight: 600;
     
 }
+#forgot-password-div{
+    display: flex;
+    justify-content: center;
+}
+#forgot-password{
+    margin:auto;
+}
