@@ -19,3 +19,7 @@ function Login(event) {
       alert(err.response.data.error);
     });
 }
+
+function forgotRedirect(event){
+  alert("Password Reset Linke sent to the ")
+}
