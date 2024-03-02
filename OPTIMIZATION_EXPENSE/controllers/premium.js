@@ -118,7 +118,6 @@ exports.getLeaderboard = async (req, res, next) => {
   const LEADER_DATA = await User.findAll({
     attributes :["id","username","totalSpendings"]
   })
-  console.log(LEADER_DATA)
 
   // {const new_db = await User.findAll({
   //   attributes: [

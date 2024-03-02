@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -28,14 +28,14 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple"
     />
+    <link rel="stylesheet" href="../public/css/myexpense.css">
   </head>
   <body>
     <div id="logout-div">
       <div id="if-premium" class="font-effect-shadow-multiple"></div>
       <button id="rzp-button">Get Premium</button>
 
-
-
+     
       <div class="username-dropdown">
         <button
           id="username-dropdown"
@@ -50,70 +50,47 @@
         <ul class="dropdown-menu" aria-labelledby="username-dropdown">
           <!-- Dropdown options go here -->
           <li id ="dropdown-logout" class="dropdown-item"><a id="logout-link" href="./login.html" class="dropdown-link">Logout</a></li>
-          <li id="dropdown-myexpenses" class="dropdown-item"><a href="./myexpense.html" id="my-expenses-link" class="dropdown-link">My Expenses</a></li>
+          <li id="dropdown-myexpenses" class="dropdown-item"><a href="" id="my-expenses-link" class="dropdown-link">My Expenses</a></li>
         </ul>
       </div>
     </div>
-    <!-- The Form Div -->
-    <div id="heading-div">
-      <h3>Add Expense</h3>
-    </div>
-    <div id="expense-form-div">
-      <!--#####  2  #####-->
-      <form id="expense-form" onsubmit="ADDEXPENSE(event)">
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          placeholder="Amount"
-          required
-        />
-        <br /><br />
-        <input
-          type="text"
-          name="description"
-          id="description"
-          required
-          placeholder="Description"
-        /><br /><br />
-        <select name="category" id="category">
-          <option selected>Category</option>
-          <option value="food">Food</option>
-          <option value="petrol">Petrol</option>
-          <option value="salary">Salary</option>
-        </select>
-        <br /><br />
-        <button id="add-expense-button" class="btn btn-outline-primary">
-          Add Expense
-        </button>
-      </form>
-    </div>
+ 
 
-    <hr />
-    <!-- The Display Div  -->
-    <div id="display-div">
-      <ul id="expense-list"></ul>
-    </div>
-    <div id="leader-button-div"></div>
-    <hr />
-    <div id="leader-board-div">
-      <h3 id="leader-board-heading"></h3>
-      <ul id="leader-board-ul"></ul>
-    </div>
-
-    <div id="table-div">
-      <!-- <table id="expenseTable">
+ 
+   <div id="main-table-div">
+    <table>
         <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Total Expenses ($)</th>
-          </tr>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Income</th>
+                <th>Expense</th>
+            </tr>
         </thead>
-        <tbody id="tableBody">
+        <tbody>
+            <tr>
+                <td>2024-03-01</td>
+                <td>Salary</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2024-03-02</td>
+                <td>Groceries</td>
+                <td>Food</td>
+                <td></td>
+                <td>$50.00</td>
+            </tr>
+            <!-- Add more rows as needed -->
         </tbody>
-      </table> -->
-    </div>
+    </table>
+   </div>
+   <div id="download-div"><button>Download</button></div>
+ 
+
+    
 
 
 

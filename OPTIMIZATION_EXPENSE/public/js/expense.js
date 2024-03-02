@@ -8,20 +8,25 @@ let USERNAME = "USERNAME";
 
 async function showLeaderBoard() {
   if (leader_board_open) {
-    const table_body = document.getElementById("tableBody");
-    table_body.remove();
+    const table_div = document.getElementById("table-div");
+    table_div.removeChild(table_div.firstChild);
 
-    const leader_ul = document.getElementById("leader-board-ul");
-    leader_ul.remove();
-
-    const ul = document.createElement("ul");
-    const leader_board_div = document.getElementById("leader-board-div");
-    ul.id = "leader-board-ul";
-    leader_board_div.appendChild(ul);
     leader_board_open = false;
-    const heading = document.getElementById("leader-board-heading");
-    heading.innerHTML = "";
   } else {
+    const table_div = document.getElementById("table-div");
+
+    const table_html = `<table id="expenseTable">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Total Expenses ($)</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+  </table>`;
+    table_div.innerHTML = table_html;
     const leader_html = `<table id="expenseTable">
     <thead>
       <tr>
@@ -35,9 +40,7 @@ async function showLeaderBoard() {
     </tbody>
   </table>`;
 
-  /////////////////////////////////////  
-
-    const table_div = document.getElementById("table-div");
+    /////////////////////////////////////
 
     // Create a temporary div element
     const tempDiv = document.createElement("div");
@@ -45,7 +48,7 @@ async function showLeaderBoard() {
     // Set the innerHTML of the temporary div to your HTML markup
     tempDiv.innerHTML = leader_html;
 
-  /////////////////////////////////////
+    /////////////////////////////////////
 
     const table_body = document.createElement("tbody");
     const table = document.getElementById("expenseTable");
