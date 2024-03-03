@@ -4,6 +4,8 @@ let leader_board_open = false;
 
 let USERNAME = "USERNAME";
 
+const existing_token = localStorage.getItem("token");
+
 //////////// FUCNTIONS ////////////////////////////////////
 
 async function showLeaderBoard() {
@@ -99,11 +101,11 @@ function populateTable(data) {
     const amountColumn = isIncome ? "Income" : "Expense";
 
     const amount = item.amount || 0;
-        if (isIncome) {
-            totalIncome += amount;
-        } else {
-            totalExpense += amount;
-        }
+    if (isIncome) {
+      totalIncome += amount;
+    } else {
+      totalExpense += amount;
+    }
     row.innerHTML = `
             <td>${new Date(item.createdAt).toLocaleDateString()}</td>
             <td>${item.description}</td>
@@ -112,19 +114,32 @@ function populateTable(data) {
             <td>${isIncome ? "" : "$" + item.amount}</td>
         `;
     tableBody.appendChild(row);
-    
   });
   const finalRow = document.createElement("tr");
-    finalRow.innerHTML = `
+  finalRow.innerHTML = `
         <td colspan="3">Total</td>
         <td>$${totalIncome.toFixed(2)}</td>
         <td>$${totalExpense.toFixed(2)}</td>
     `;
-    table.appendChild(finalRow);
+  table.appendChild(finalRow);
+}
+
+async function DOWNLOAD(event) {
+  try {
+    event.preventDefault();
+    const data = await axios.get("http://localhost:5000/expense/download", {
+      headers: { Authorization: existing_token },
+    });
+
+    if (data.status === 200) {
+      // console.log(data);
+      window.location.href = data.data.file;
+    }
+  } catch (err) {
+    console.log(err);
+  }
 }
 ////////////////////////////////////////////////////////////
-
-const existing_token = localStorage.getItem("token");
 
 if (!existing_token) {
   window.location.href = "./login.html";

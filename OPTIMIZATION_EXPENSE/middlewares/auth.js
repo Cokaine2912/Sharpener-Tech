@@ -21,7 +21,6 @@ exports.authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const obj = jwt.verify(token, secretKey);
-    
     req.headers.username = obj.name;
     req.headers.premium = obj.premium;
     req.headers.userId = obj.userId;
@@ -34,6 +33,7 @@ exports.authenticate = async (req, res, next) => {
         console.log(err);
       });
   } catch (err) {
+    console.log(err);
     return res.status(401).json({ success: false });
   }
 };

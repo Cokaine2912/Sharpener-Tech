@@ -2,9 +2,41 @@
 
 const Expense = require("../models/expense");
 const User = require("../models/user");
+const { all } = require("../routes/expense");
 const sequelize = require("../util/database");
 
+const AWS = require("aws-sdk");
+
 //  The required functions ##############################################################################
+
+async function uploadToS3(data, filename) {
+  const BUCKET_NAME = "cokaineexpensetracker";
+  const IAM_USER_KEY = "AKIA47CR2QMJQP6YQNU7";
+  const IAM_USER_SECRET = "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";
+
+  let s3bucket = new AWS.S3({
+    accessKeyId: IAM_USER_KEY,
+    secretAccessKey: IAM_USER_SECRET,
+    Bucket: BUCKET_NAME,
+  });
+  var params = {
+    Bucket: BUCKET_NAME,
+    Key: filename,
+    Body: data,
+    ACL: "public-read",
+  };
+  return new Promise((resolve, reject) => {
+    s3bucket.upload(params, (err, res) => {
+      if (err) {
+        console.log("Something went wrong !", err);
+        reject(err)
+      } else {
+        console.log("Success", res);
+        resolve(res.Location);
+      }
+    });
+  });
+}
 
 // All the exports ##############################################################################
 exports.getAllExpenseData = (req, res, next) => {
@@ -72,6 +104,20 @@ exports.deleteExpense = async (req, res, next) => {
     if (transaction) {
       await transaction.rollback();
     }
+    console.log(err);
+  }
+};
+
+exports.getDownloadExpense = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const user_expenses = await Expense.findAll({ where: { userId: user.id } });
+    const tarik = new Date();
+    const stringified = JSON.stringify(user_expenses);
+    const filename = `Expense${user.id}/${user.username}_expenses_${tarik}.txt`;
+    const fileurl = await uploadToS3(stringified, filename);
+    res.status(200).json({ file: fileurl, msg: "success" });
+  } catch (err) {
     console.log(err);
   }
 };

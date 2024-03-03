@@ -18,4 +18,6 @@ router.post(
 
 router.delete("/deleteexpense/:id", expenseController.deleteExpense);
 
+router.get("/download",authMiddleware.authenticate, expenseController.getDownloadExpense);
+
 module.exports = router;
