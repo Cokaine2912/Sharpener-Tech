@@ -28,14 +28,13 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple"
     />
-    <link rel="stylesheet" href="../public/css/myexpense.css">
+    <link rel="stylesheet" href="../public/css/myexpense.css" />
   </head>
   <body>
     <div id="logout-div">
       <div id="if-premium" class="font-effect-shadow-multiple"></div>
       <button id="rzp-button">Get Premium</button>
 
-     
       <div class="username-dropdown">
         <button
           id="username-dropdown"
@@ -49,54 +48,76 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="username-dropdown">
           <!-- Dropdown options go here -->
-          <li id ="dropdown-logout" class="dropdown-item"><a id="logout-link" href="./login.html" class="dropdown-link">Logout</a></li>
-          <li id="dropdown-myexpenses" class="dropdown-item"><a href="" id="my-expenses-link" class="dropdown-link">My Expenses</a></li>
+          <li id="dropdown-logout" class="dropdown-item">
+            <a id="logout-link" href="./login.html" class="dropdown-link"
+              >Logout</a
+            >
+          </li>
+          <li id="dropdown-myexpenses" class="dropdown-item">
+            <a href="" id="my-expenses-link" class="dropdown-link"
+              >My Expenses</a
+            >
+          </li>
         </ul>
       </div>
     </div>
- 
 
- 
-   <div id="main-table-div">
-    <table>
+    <br /><br />
+    <div id="filter-div">
+      <form action="">
+        <select name="timeframe" id="timeframe-select">
+          <option disabled selected>timeframe</option>
+          <option value="daily">1d</option>
+          <option value="weekly">1w</option>
+          <option value="monthly">1y</option>
+          <option value="all">All</option>
+        </select>
+        <select name="category" id="category-select">
+          <option disabled selected value="category" >category</option>
+          <option value="food">Food</option>
+          <option value="salary">Salary</option>
+          <option value="petrol">Petrol</option>
+          <option value="all">All</option>
+        </select>
+        <button>show</button>
+      </form>
+    </div>
+    <div id="download-div">
+      <button class="btn btn-outline-primary" id="my-download-button">
+        Download
+      </button>
+    </div>
+    <div id="main-table-div">
+      <table>
         <thead>
-            <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Income</th>
-                <th>Expense</th>
-            </tr>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Income</th>
+            <th>Expense</th>
+          </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>2024-03-01</td>
-                <td>Salary</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2024-03-02</td>
-                <td>Groceries</td>
-                <td>Food</td>
-                <td></td>
-                <td>$50.00</td>
-            </tr>
-            <!-- Add more rows as needed -->
+        <tbody id="table-body">
+          <!-- <tr>
+            <td>2024-03-01</td>
+            <td>Salary</td>
+            <td>Income</td>
+            <td>$2000.00</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>2024-03-02</td>
+            <td>Groceries</td>
+            <td>Food</td>
+            <td></td>
+            <td>$50.00</td>
+          </tr> -->
         </tbody>
-    </table>
-   </div>
-   <div id="download-div"><button>Download</button></div>
- 
-
-    
-
-
-
-
+      </table>
+    </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script src="../public/js/expense.js"></script>
+  <script src="../public/js/myexpense.js"></script>
 </html>
