@@ -1,0 +1,33 @@
+#logout-div {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 7px;
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+
+
+#username-dropdown {
+    border: 0px;
+
+}
+
+#if-premium {
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.dropdown-item {
+    margin-left: 10px;
+}
+
+#my-expenses-link {
+    text-decoration: none;
+}
+.dropdown-link{
+    text-decoration: none;
+}
+.dropdown-link:hover {
+    color: grey;
+}

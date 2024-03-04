@@ -2,17 +2,18 @@
 
 const Expense = require("../models/expense");
 const User = require("../models/user");
-const { all } = require("../routes/expense");
+const Download = require("../models/userdownlaod");
 const sequelize = require("../util/database");
-
+const ExpenseServices = require("../services/expense");
+const DownloadServices = require("../services/download");
 const AWS = require("aws-sdk");
 
 //  The required functions ##############################################################################
 
 async function uploadToS3(data, filename) {
   const BUCKET_NAME = "cokaineexpensetracker";
-  const IAM_USER_KEY = "AKIA47CR2QMJQP6YQNU7";
-  const IAM_USER_SECRET = "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";
+  const IAM_USER_KEY = process.env.IAM_USER_KEY;
+  const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
 
   let s3bucket = new AWS.S3({
     accessKeyId: IAM_USER_KEY,
@@ -29,7 +30,7 @@ async function uploadToS3(data, filename) {
     s3bucket.upload(params, (err, res) => {
       if (err) {
         console.log("Something went wrong !", err);
-        reject(err)
+        reject(err);
       } else {
         console.log("Success", res);
         resolve(res.Location);
@@ -39,15 +40,14 @@ async function uploadToS3(data, filename) {
 }
 
 // All the exports ##############################################################################
-exports.getAllExpenseData = (req, res, next) => {
-  const userId = req.headers.userId;
-  Expense.findAll({ where: { userId: userId } })
-    .then((op) => {
-      res.json(op);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+exports.getAllExpenseData = async (req, res, next) => {
+  try {
+    const userId = req.headers.userId;
+    const op = await Expense.findAll({ where: { userId: userId } });
+    res.json(op);
+  } catch (err) {
+    res.status(500).json({ success: false, err: err });
+  }
 };
 
 exports.postAddExpense = async (req, res, next) => {
@@ -116,8 +116,28 @@ exports.getDownloadExpense = async (req, res, next) => {
     const stringified = JSON.stringify(user_expenses);
     const filename = `Expense${user.id}/${user.username}_expenses_${tarik}.txt`;
     const fileurl = await uploadToS3(stringified, filename);
-    res.status(200).json({ file: fileurl, msg: "success" });
+
+    await Download.create({ userId: user.id, fileURL: fileurl });
+
+    res.status(200).json({ file: fileurl, success: true });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ fileurl: "", success: false, err: err });
+  }
+};
+
+exports.getAllDownloads = async (req, res, next) => {
+  const items_per_page = 3
+  try {
+    const id = req.user.id;
+    const all = await Download.findAll({
+      where: { userId: id },
+      offset : 0,
+      limit : items_per_page , 
+      order: [["createdAt", "DESC"]],
+    });
+    res.json({ success: true, data: all });
+  } catch (err) {
+    res.status(500).json(err);
   }
 };

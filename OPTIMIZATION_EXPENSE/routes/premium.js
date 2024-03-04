@@ -31,4 +31,6 @@ router.post(
 
 router.get("/premium/leaderboard", premiumController.getLeaderboard);
 
+router.get("/authenticationcheck",authMiddleware.middleAuthenticate,premiumController.getDetails)
+
 module.exports = router;

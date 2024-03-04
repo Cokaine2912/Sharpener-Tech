@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get(
   "/allexpensedata",
-  authMiddleware.middleGetAll,
+  authMiddleware.middleAuthenticate,
   expenseController.getAllExpenseData
 );
 router.post(
@@ -19,5 +19,8 @@ router.post(
 router.delete("/deleteexpense/:id", expenseController.deleteExpense);
 
 router.get("/download",authMiddleware.authenticate, expenseController.getDownloadExpense);
+
+router.get("/alldownloads",authMiddleware.middleAuthenticate, expenseController.getAllDownloads);
+
 
 module.exports = router;

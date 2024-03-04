@@ -177,7 +177,7 @@ if (!existing_token) {
         headers: { Authorization: token },
       }
     );
-    console.log(all.data);
+
     populateTable(all.data);
   }
   ONLOAD();
@@ -239,3 +239,11 @@ if (!existing_token) {
     };
   }
 }
+
+async function CHECKING(event) {
+  event.preventDefault();
+  const op = await axios.get("http://localhost:5000/authenticationcheck", {
+    headers: { Authorization: existing_token },
+  });
+  console.log(op);
+} // TEMPORARY
