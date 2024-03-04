@@ -31,3 +31,7 @@
 .dropdown-link:hover {
     color: grey;
 }
+#page-button-div{
+    display: flex;
+    justify-content: center;
+}

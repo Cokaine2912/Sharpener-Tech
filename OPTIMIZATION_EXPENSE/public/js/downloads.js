@@ -5,9 +5,10 @@ let USERNAME = "USERNAME";
 const existing_token = localStorage.getItem("token");
 
 //////////// FUCNTIONS ////////////////////////////////////
+
 function populateTable(res) {
   const tableBody = document.getElementById("table-body");
-  tableBody.innerHTML = ""
+  tableBody.innerHTML = "";
   res.forEach((item) => {
     // Create a new row
     const row = document.createElement("tr");
@@ -34,12 +35,21 @@ function populateTable(res) {
 async function PAGEITEMS(event) {
   event.preventDefault();
   const button_id = event.target.id;
-  let id = button_id.split("-")[1];
+  let page = button_id.split("-")[1];
+  let ipp = localStorage.getItem("ipp");
+
+  if (!ipp) {
+    ipp = 10;
+  } else {
+    ipp = +ipp;
+  }
+  // const ipp = document.getElementById("ipp-select");
   const response = await axios.get(
-    `http://localhost:5000/expense/alldownloads/${id}`,
-    { headers: { Authorization: existing_token } }
+    `http://localhost:5000/expense/alldownloads/${page}`,
+    { headers: { Authorization: existing_token, ipp: ipp } }
   );
   const data = response.data.data;
+
   populateTable(data);
 }
 ////////////////////////////////////////////////////////////
@@ -47,6 +57,18 @@ async function PAGEITEMS(event) {
 if (!existing_token) {
   window.location.href = "./login.html";
 } else {
+  //// some inside functions
+
+  function ippSET(event) {
+    event.preventDefault();
+    let ipp = document.getElementById("ipp-select");
+    if (!ipp) {
+      return alert("Select Rows per page !");
+    }
+    localStorage.setItem("ipp", ipp.value);
+    ONLOAD();
+  }
+
   function premiumCheck() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -78,17 +100,24 @@ if (!existing_token) {
       garibsePremium();
     }
     const token = localStorage.getItem("token");
+    let ipp = localStorage.getItem("ipp");
+    if (!ipp) {
+      ipp = 10;
+    } else {
+      ipp = +ipp;
+    }
     const response = await axios.get(
       "http://localhost:5000/expense/alldownloads/1",
-      { headers: { Authorization: token } }
+      { headers: { Authorization: token , ipp: ipp} }
     );
     const data = response.data.data;
     const total = response.data.total;
-    const ipp = response.data.ipp;
+
     const buttons = Math.ceil(total / ipp);
     const button_div = document.getElementById("page-button-div");
+    button_div.innerHTML = "";
     for (let i = 1; i <= buttons; i++) {
-      const html = `<button class = "pagebuttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+      const html = `<button class="btn btn-outline-primary" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
       button_div.innerHTML += html;
     }
     populateTable(data);
@@ -97,7 +126,10 @@ if (!existing_token) {
 
   function garibsePremium() {
     const rzp_button = document.getElementById("rzp-button");
-    rzp_button.remove();
+    if (rzp_button) {
+      rzp_button.remove();
+    }
+
     const if_premium = document.getElementById("if-premium");
     if_premium.logo = "premium-logo";
     const premium_text = document.createTextNode("Premium");

@@ -66,9 +66,24 @@
       </div>
     </div>
 
-    <br /><br />
+    <br />
     
-   
+   <div id="ipp-div">
+    <form id="ipp-form">
+        <label for="ipp-select">Rows per page : </label>
+        <select name="ipp" id="ipp-select">
+            <option value="" disabled selected>select</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="20">25</option>
+            <option value="20">30</option>
+        </select>
+        <button id="ipp-button" onclick="ippSET(event)">set</button>
+    </form>
+   </div>
+   <br>
     <div id="main-table-div">
       <table class="table">
         <thead>
