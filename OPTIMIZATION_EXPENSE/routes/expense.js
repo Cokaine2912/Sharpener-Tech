@@ -20,7 +20,7 @@ router.delete("/deleteexpense/:id", expenseController.deleteExpense);
 
 router.get("/download",authMiddleware.authenticate, expenseController.getDownloadExpense);
 
-router.get("/alldownloads",authMiddleware.middleAuthenticate, expenseController.getAllDownloads);
+router.get("/alldownloads/:page",authMiddleware.middleAuthenticate, expenseController.getAllDownloads);
 
 
 module.exports = router;

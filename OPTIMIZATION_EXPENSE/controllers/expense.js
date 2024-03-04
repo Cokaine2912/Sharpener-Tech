@@ -127,16 +127,18 @@ exports.getDownloadExpense = async (req, res, next) => {
 };
 
 exports.getAllDownloads = async (req, res, next) => {
-  const items_per_page = 3
+  const page = req.params.page;
+  const items_per_page = 2;
   try {
     const id = req.user.id;
+    const total = await Download.count();
     const all = await Download.findAll({
       where: { userId: id },
-      offset : 0,
-      limit : items_per_page , 
+      offset: items_per_page * (page - 1),
+      limit: items_per_page,
       order: [["createdAt", "DESC"]],
     });
-    res.json({ success: true, data: all });
+    res.json({ success: true, data: all, total: total, ipp: items_per_page });
   } catch (err) {
     res.status(500).json(err);
   }

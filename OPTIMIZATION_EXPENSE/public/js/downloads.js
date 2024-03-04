@@ -7,6 +7,7 @@ const existing_token = localStorage.getItem("token");
 //////////// FUCNTIONS ////////////////////////////////////
 function populateTable(res) {
   const tableBody = document.getElementById("table-body");
+  tableBody.innerHTML = ""
   res.forEach((item) => {
     // Create a new row
     const row = document.createElement("tr");
@@ -28,6 +29,18 @@ function populateTable(res) {
     // Append row to the table body
     tableBody.appendChild(row);
   });
+}
+
+async function PAGEITEMS(event) {
+  event.preventDefault();
+  const button_id = event.target.id;
+  let id = button_id.split("-")[1];
+  const response = await axios.get(
+    `http://localhost:5000/expense/alldownloads/${id}`,
+    { headers: { Authorization: existing_token } }
+  );
+  const data = response.data.data;
+  populateTable(data);
 }
 ////////////////////////////////////////////////////////////
 
@@ -66,18 +79,18 @@ if (!existing_token) {
     }
     const token = localStorage.getItem("token");
     const response = await axios.get(
-      "http://localhost:5000/expense/alldownloads",
+      "http://localhost:5000/expense/alldownloads/1",
       { headers: { Authorization: token } }
     );
     const data = response.data.data;
-
-    const buttons = Math.ceil(data.length / 3);
+    const total = response.data.total;
+    const ipp = response.data.ipp;
+    const buttons = Math.ceil(total / ipp);
     const button_div = document.getElementById("page-button-div");
-    for (let i = 1; i <= buttons ; i++) {
+    for (let i = 1; i <= buttons; i++) {
       const html = `<button class = "pagebuttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
       button_div.innerHTML += html;
     }
-
     populateTable(data);
   }
   ONLOAD();
