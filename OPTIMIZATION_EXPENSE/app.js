@@ -22,7 +22,7 @@ const app = express();
 
 app.use(cors());
 app.use(helmet());
-app.use(compression());
+// app.use(compression());
 
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
