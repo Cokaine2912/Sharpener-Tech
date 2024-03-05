@@ -35,3 +35,35 @@
     display: flex;
     justify-content: center;
 }
+.page-buttons{
+    margin-right: 5px;
+    background-color: white;
+    border: none;
+    color: blue;
+}
+.page-buttons:hover{
+    text-decoration: underline;
+}
+#ipp-div{
+    display: flex;
+}
+
+#ipp-form {
+    display: flex;
+    justify-content: start;
+}
+#ipp-button {
+    padding: 0px 7px;
+    margin-left: 7px;
+}
+#ipp-select{
+    margin-left : 7px
+}
+#pages-info{
+    text-align: end;
+    padding-right: 10px ;
+}
+#small-page-box{
+    width: 20px;
+    height: 20px;
+}

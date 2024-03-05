@@ -18,7 +18,6 @@ async function showLeaderBoard() {
     const table_html = `<table id="expenseTable">
     <thead>
       <tr>
-        <th>User ID</th>
         <th>Name</th>
         <th>Total Expenses ($)</th>
       </tr>
@@ -87,9 +86,9 @@ function populateTable(data) {
   var tableBody = document.getElementById("tableBody");
   data.forEach(function (item) {
     var row = tableBody.insertRow();
-    row.insertCell(0).textContent = item.id;
-    row.insertCell(1).textContent = item.username;
-    row.insertCell(2).textContent =
+    // row.insertCell(0).textContent = item.id;
+    row.insertCell(0).textContent = item.username;
+    row.insertCell(1).textContent =
       item.totalExpense === null ? "0" : item.totalSpendings;
   });
 }

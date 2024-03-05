@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -34,8 +34,6 @@
       <div id="if-premium" class="font-effect-shadow-multiple"></div>
       <button id="rzp-button">Get Premium</button>
 
-
-
       <div class="username-dropdown">
         <button
           id="username-dropdown"
@@ -49,8 +47,32 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="username-dropdown">
           <!-- Dropdown options go here -->
-          <li id ="dropdown-logout" class="dropdown-item"><a id="logout-link" href="./login.html" class="dropdown-link">Logout</a></li>
-          <li id="dropdown-myexpenses" class="dropdown-item"><a href="./myexpense.html" id="my-expenses-link" class="dropdown-link">My Report</a></li>
+          <li id="dropdown-home" class="dropdown-item">
+            <a id="home-link" href="./expense.html" class="dropdown-link"
+              >Home</a
+            >
+          </li>
+          <li id="dropdown-myexpenses" class="dropdown-item">
+            <a
+              href="./myexpense.html"
+              id="my-expenses-link"
+              class="dropdown-link"
+              >My Report</a
+            >
+          </li>
+          <li id="dropdown-downloads" class="dropdown-item">
+            <a
+              href="./downloads.html"
+              id="downloads-link"
+              class="dropdown-link"
+              >Downloads</a
+            >
+          </li>
+          <li id="dropdown-logout" class="dropdown-item">
+            <a id="logout-link" href="./login.html" class="dropdown-link"
+              >Logout</a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -114,10 +136,6 @@
         </tbody>
       </table> -->
     </div>
-
-
-
-
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

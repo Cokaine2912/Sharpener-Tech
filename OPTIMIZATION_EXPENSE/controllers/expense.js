@@ -129,7 +129,7 @@ exports.getDownloadExpense = async (req, res, next) => {
 exports.getAllDownloads = async (req, res, next) => {
   const page = req.params.page;
   let ipp = req.headers.ipp;
-  ipp = +ipp
+  ipp = +ipp;
   try {
     const id = req.user.id;
     const total_prom = Download.count();
@@ -140,7 +140,25 @@ exports.getAllDownloads = async (req, res, next) => {
       order: [["createdAt", "DESC"]],
     });
     const [total, all] = await Promise.all([total_prom, all_prom]);
-    res.json({ success: true, data: all, total: total, ipp: ipp });
+    const total_pages = Math.ceil(total / ipp);
+    // console.log("TOTAL PAGES" , total_pages)
+    let next = false;
+    if (page < total_pages) {
+      next = true;
+    }
+    let prev = false;
+    if (page > 1) {
+      prev = true;
+    }
+    res.json({
+      success: true,
+      data: all,
+      total: total,
+      ipp: ipp,
+      current : page,
+      next: next,
+      prev: prev,
+    });
   } catch (err) {
     res.status(500).json(err);
   }

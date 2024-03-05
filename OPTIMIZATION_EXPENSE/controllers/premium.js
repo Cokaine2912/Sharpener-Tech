@@ -116,7 +116,8 @@ exports.getLeaderboard = async (req, res, next) => {
   ////
 
   const LEADER_DATA = await User.findAll({
-    attributes :["id","username","totalSpendings"]
+    attributes :["id","username","totalSpendings"],
+    order: [["totalSpendings", "DESC"]]
   })
 
   // {const new_db = await User.findAll({

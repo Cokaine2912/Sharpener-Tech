@@ -49,6 +49,40 @@ async function PAGEITEMS(event) {
     { headers: { Authorization: existing_token, ipp: ipp } }
   );
   const data = response.data.data;
+  const total = response.data.total;
+  const current = response.data.current;
+  const prev = response.data.prev;
+  const next = response.data.next;
+  const button_div = document.getElementById("page-button-div");
+  button_div.innerHTML = "";
+  console.log(prev, current, next);
+
+  if (prev && next) {
+    for (let i = +current - 1; i <= +current + 1; i++) {
+      const html = `<button class="page-buttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+      button_div.innerHTML += html;
+    }
+  } else if (prev) {
+    for (let i = +current - 1; i <= current; i++) {
+      const html = `<button class="page-buttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+      button_div.innerHTML += html;
+    }
+  } else if (!prev && !next) {
+    console.log("this ELSE !!");
+    let i = +current;
+    const html = `<button class="page-buttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+    button_div.innerHTML += html;
+  } else {
+    for (let i = +current; i <= +current + 1; i++) {
+      const html = `<button class="page-buttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+      button_div.innerHTML += html;
+    }
+  }
+
+  const active = document.getElementById(`page-${current}-button`);
+  active.style = "color : grey ; text-decoration : none";
+  const pages_info = document.getElementById("pages-info");
+  pages_info.innerHTML = `Page ${current} of ${total}`;
 
   populateTable(data);
 }
@@ -94,6 +128,7 @@ if (!existing_token) {
     USERNAME = bool.data.username;
 
     const username_button = document.getElementById("username-dropdown");
+    username_button.innerHTML = "";
     const username_button_text = document.createTextNode(USERNAME);
     username_button.appendChild(username_button_text);
     if (bool.data.premium) {
@@ -101,6 +136,7 @@ if (!existing_token) {
     }
     const token = localStorage.getItem("token");
     let ipp = localStorage.getItem("ipp");
+    const ipp_select = document.getElementById("ipp-select");
     if (!ipp) {
       ipp = 10;
     } else {
@@ -108,19 +144,33 @@ if (!existing_token) {
     }
     const response = await axios.get(
       "http://localhost:5000/expense/alldownloads/1",
-      { headers: { Authorization: token , ipp: ipp} }
+      { headers: { Authorization: token, ipp: ipp } }
     );
     const data = response.data.data;
     const total = response.data.total;
-
+    const current = response.data.current;
+    const prev = response.data.prev;
+    const next = response.data.next;
     const buttons = Math.ceil(total / ipp);
     const button_div = document.getElementById("page-button-div");
     button_div.innerHTML = "";
-    for (let i = 1; i <= buttons; i++) {
-      const html = `<button class="btn btn-outline-primary" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+
+    if (!next && !prev) {
+      let i = +current;
+      const html = `<button class="page-buttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
       button_div.innerHTML += html;
+    } else {
+      for (let i = +current; i <= +current + 1; i++) {
+        const html = `<button class="page-buttons" id = "page-${i}-button" onclick="PAGEITEMS(event)">${i}</button>`;
+        button_div.innerHTML += html;
+      }
     }
+    const active = document.getElementById("page-1-button");
+    active.style = "color : grey ; text-decoration : none";
     populateTable(data);
+
+    const pages_info = document.getElementById("pages-info");
+    pages_info.innerHTML = `Page ${current} of ${total}`;
   }
   ONLOAD();
 
@@ -131,6 +181,7 @@ if (!existing_token) {
     }
 
     const if_premium = document.getElementById("if-premium");
+    if_premium.innerHTML = "";
     if_premium.logo = "premium-logo";
     const premium_text = document.createTextNode("Premium");
     if_premium.appendChild(premium_text);
@@ -186,3 +237,7 @@ if (!existing_token) {
 }
 
 // TEMPORARY
+
+
+
+

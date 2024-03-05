@@ -48,19 +48,24 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="username-dropdown">
           <!-- Dropdown options go here -->
-          <li id="dropdown-logout" class="dropdown-item">
-            <a id="logout-link" href="./login.html" class="dropdown-link"
-              >Logout</a
+          <li id="dropdown-home" class="dropdown-item">
+            <a href="./expense.html" id="home-link" class="dropdown-link"
+              >Home</a
             >
           </li>
           <li id="dropdown-myexpenses" class="dropdown-item">
-            <a href="" id="my-expenses-link" class="dropdown-link"
+            <a href="./myexpense.html" id="my-expenses-link" class="dropdown-link"
               >My Expenses</a
             >
           </li>
           <li id="dropdown-downloads" class="dropdown-item">
             <a href="./downloads.html" id="downloads-link" class="dropdown-link"
               >Downloads</a
+            >
+          </li>
+          <li id="dropdown-logout" class="dropdown-item">
+            <a id="logout-link" href="./login.html" class="dropdown-link"
+              >Logout</a
             >
           </li>
         </ul>
@@ -93,7 +98,7 @@
       </button>
     </div>
     <div id="main-table-div">
-      <table>
+      <table class="table">
         <thead>
           <tr>
             <th>Date</th>
@@ -121,10 +126,6 @@
         </tbody>
       </table>
     </div>
-    <br><br>
-    <form  onsubmit="CHECKING(event)">
-      <button type="submit">Checking</button>
-    </form>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
