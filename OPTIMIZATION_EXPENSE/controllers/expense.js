@@ -40,11 +40,12 @@ async function uploadToS3(data, filename) {
 }
 
 // All the exports ##############################################################################
+
 exports.getAllExpenseData = async (req, res, next) => {
   try {
     const userId = req.headers.userId;
     const op = await Expense.findAll({ where: { userId: userId } });
-    res.json(op);
+    res.status(200).json(op);
   } catch (err) {
     res.status(500).json({ success: false, err: err });
   }
@@ -132,6 +133,7 @@ exports.getAllDownloads = async (req, res, next) => {
   ipp = +ipp;
   try {
     const id = req.user.id;
+
     const total_prom = Download.count();
     const all_prom = Download.findAll({
       where: { userId: id },
@@ -139,21 +141,28 @@ exports.getAllDownloads = async (req, res, next) => {
       limit: ipp,
       order: [["createdAt", "DESC"]],
     });
+
     const [total, all] = await Promise.all([total_prom, all_prom]);
     const total_pages = Math.ceil(total / ipp);
-    // console.log("TOTAL PAGES" , total_pages)
+    
     let next = false;
+
     if (page < total_pages) {
       next = true;
     }
+
     let prev = false;
+
     if (page > 1) {
       prev = true;
     }
-    res.json({
+
+    // RESPONSE
+
+    res.status(200).json({
       success: true,
       data: all,
-      total: total,
+      total: total_pages,
       ipp: ipp,
       current : page,
       next: next,

@@ -59,7 +59,7 @@ async function showLeaderBoard() {
     table.appendChild(table_body);
 
     const leaderBoard = await axios.get(
-      "http://localhost:5000/premium/leaderboard"
+      "http://65.0.180.206:5000/premium/leaderboard"
     );
 
     populateTable(leaderBoard.data);
@@ -127,7 +127,7 @@ function populateTable(data) {
 async function DOWNLOAD(event) {
   try {
     event.preventDefault();
-    const data = await axios.get("http://localhost:5000/expense/download", {
+    const data = await axios.get("http://65.0.180.206:5000/expense/download", {
       headers: { Authorization: existing_token },
     });
 
@@ -148,7 +148,7 @@ if (!existing_token) {
     return new Promise(async (resolve, reject) => {
       const token = localStorage.getItem("token");
       const bool = await axios.get(
-        "http://localhost:5000/expense/premiumness",
+        "http://65.0.180.206:5000/expense/premiumness",
         {
           headers: { Authorization: token },
         }
@@ -172,7 +172,7 @@ if (!existing_token) {
     }
     const token = localStorage.getItem("token");
     const all = await axios.get(
-      "http://localhost:5000/expense/allexpensedata",
+      "http://65.0.180.206:5000/expense/allexpensedata",
       {
         headers: { Authorization: token },
       }
@@ -197,7 +197,7 @@ if (!existing_token) {
     rzp_button.onclick = async function (event) {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/purchase/premium",
+        "http://65.0.180.206:5000/purchase/premium",
         {
           headers: { Authorization: token },
         }
@@ -207,7 +207,7 @@ if (!existing_token) {
         order_id: response.data.order.id,
         handler: async function (response) {
           const update_response = await axios.post(
-            "http://localhost:5000/purchase/premium/updatetransactionstatus",
+            "http://65.0.180.206:5000/purchase/premium/updatetransactionstatus",
             {
               order_id: options.order_id,
               payment_id: response.razorpay_payment_id,
@@ -226,7 +226,7 @@ if (!existing_token) {
 
       rzp1.on("payment.failed", async function (response) {
         await axios.post(
-          "http://localhost:5000/purchase/premium/updatefailure",
+          "http://65.0.180.206:5000/purchase/premium/updatefailure",
           {
             order_id: options.order_id,
             payment_id: response.razorpay_payment_id,
@@ -242,7 +242,7 @@ if (!existing_token) {
 
 async function CHECKING(event) {
   event.preventDefault();
-  const op = await axios.get("http://localhost:5000/authenticationcheck", {
+  const op = await axios.get("http://65.0.180.206:5000/authenticationcheck", {
     headers: { Authorization: existing_token },
   });
   console.log(op);

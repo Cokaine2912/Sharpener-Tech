@@ -12,7 +12,7 @@ function setPassword(event) {
     password: password,
   };
   axios
-    .post("http://localhost:5000/password/forgotpassword", obj)
+    .post("http://65.0.180.206:5000/password/forgotpassword", obj)
     .then((op) => {
       console.log(op);
     })

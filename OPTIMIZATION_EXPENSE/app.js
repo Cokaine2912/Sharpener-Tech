@@ -37,6 +37,23 @@ app.use("/expense", expenseRoutes);
 app.use(premiumRoutess);
 app.use("/password", forgotRoutes);
 
+app.use("/public", (req, res) => {
+  res.sendFile(path.join(__dirname, `public/${req.url}`));
+});
+
+app.use((req, res, next) => {
+  console.log("URL :", req.url);
+  res.setHeader(
+    "Content-Security-Policy",
+    "script-src 'self' cdnjs.cloudflare.com cdn.jsdelivr.net checkout.razorpay.com 'unsafe-inline'"
+  );
+  res.sendFile(path.join(__dirname, `views/${req.url}`));
+});
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "views/login.html"));
+});
+
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
@@ -52,7 +69,7 @@ Download.belongsTo(User);
 sequelize
   .sync()
   .then((result) => {
-    app.listen(process.env.PORT || 5000);
+    app.listen(+process.env.PORT || 5000);
   })
   .catch((err) => {
     console.log(err);

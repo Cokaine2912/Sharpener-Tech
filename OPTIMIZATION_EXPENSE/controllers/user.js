@@ -2,70 +2,99 @@
 
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 //  The required functions ##############################################################################
 
 function HASHING(password, saltrounds) {
   return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltrounds).then((hash) => {
-      resolve(hash);
-    });
+    bcrypt
+      .hash(password, saltrounds)
+      .then((hash) => {
+        resolve(hash);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
 
 function DEHASHING(password, hash) {
   return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash).then((op) => {
-      resolve(op);
-    });
+    bcrypt
+      .compare(password, hash)
+      .then((op) => {
+        resolve(op);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
 
-
-const secretKey = "feiofheofgepegje"
-function generateAccessToken(id,name,ispremiumUser) {
-    return jwt.sign({userId : id , name: name ,premium : ispremiumUser},secretKey)
+const secretKey = process.env.USER_ACCESS_TOKEN;
+function generateAccessToken(id, name, ispremiumUser) {
+  return jwt.sign(
+    { userId: id, name: name, premium: ispremiumUser },
+    secretKey
+  );
 }
 
 // All the exports ##############################################################################
 exports.postNewUser = async (req, res, next) => {
-  const new_user = req.body;
-  const saltrounds = 10;
-  const new_pass = await HASHING(new_user.password, saltrounds);
-  new_user.password = new_pass;
-  User.create(new_user)
-    .then((op) => {
-      res.json(op);
-    })
-    .catch((err) => {
-      if (err.name === "SequelizeUniqueConstraintError") {
-        res.json({ error: "email already registered ! " });
-      } else {
-        console.log(err);
-      }
-    });
+  try {
+    const new_user = req.body;
+
+    const saltrounds = +process.env.SALTROUNDS;
+
+    const new_pass = await HASHING(new_user.password, saltrounds);
+    new_user.password = new_pass;
+    User.create(new_user)
+      .then((op) => {
+        res.status(201).json(op);
+      })
+      .catch((err) => {
+        if (err.name === "SequelizeUniqueConstraintError") {
+          res.json({ error: "email already registered ! " });
+        } else {
+          console.log(err);
+        }
+      });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 };
 
 exports.postUserLogin = async (req, res, next) => {
-  const obj = req.body;
-  const email = obj.email;
-  const password = obj.password;
-  
+  try {
+    const obj = req.body;
+    const email = obj.email;
+    const password = obj.password;
 
-  const findings = await User.findAll({ where: { email: email } });
+    const findings = await User.findAll({ where: { email: email } });
 
-  if (findings.length === 0) {
-    res.status(404).json({ error: "User Not Found !" });
-  } else {
-    const hash = findings[0].password;
-    const dehash = await DEHASHING(password, hash);
-    // console.log(dehash);
-
-    const token = generateAccessToken(findings[0].id,findings[0].username,findings[0].ispremiumUser)
-    if (!dehash) {
-      res.status(400).json({ error: "User Not Authorized !" });
+    if (findings.length === 0) {
+      res.status(404).json({ error: "User Not Found !" });
     } else {
-      res.status(200).json({ success: "User Login Successful !" ,token  : token});
+      const hash = findings[0].password;
+      const dehash = await DEHASHING(password, hash);
+
+      const token = generateAccessToken(
+        findings[0].id,
+        findings[0].username,
+        findings[0].ispremiumUser
+      );
+      if (!dehash) {
+        res.status(400).json({ error: "User Not Authorized !" });
+      } else {
+        res
+          .status(200)
+          .json({ success: "User Login Successful !", token: token });
+      }
     }
+  } catch (err) {
+    res.status(404).json(err);
   }
 };

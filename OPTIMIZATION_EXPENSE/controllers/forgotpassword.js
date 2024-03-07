@@ -1,16 +1,15 @@
+/// ALL THE IMPORTS ////////////////
+
 const sib = require("sib-api-v3-sdk");
 const fs = require("fs");
 const { v4: uuidv4, validate: uuidValidate } = require("uuid");
 const path = require("path");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 //// MODELS //////////////////
 const Forgot = require("../models/forgot");
 const User = require("../models/user");
-
-// const uuid = require("uuid");
-
-require("dotenv").config();
 
 const client = sib.ApiClient.instance;
 
@@ -20,16 +19,15 @@ apiKey.apiKey = process.env.SIB_API_KEY;
 const tranEmailApi = new sib.TransactionalEmailsApi();
 
 const sender = {
-  email: "niraj2835@gmail.com",
-  name: "Meredith",
+  email: process.env.SENDER_EMAIL,
+  name: process.env.SENDER_NAME,
 };
-
-// const redirect = "http://localhost:5000/password/resetpassword"
 
 function validate(uuid) {
   return uuidValidate(uuid);
 }
-const redirect = "http://localhost:5000/password/resetpassword";
+
+const redirect = "http://65.0.180.206:5000/password/resetpassword";
 async function SendinBlue(receiver) {
   const receivers = [
     {
@@ -55,18 +53,27 @@ async function SendinBlue(receiver) {
 
 async function HASHING(password, saltrounds) {
   return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltrounds).then((hash) => {
-      resolve(hash);
-    });
+    bcrypt
+      .hash(password, saltrounds)
+      .then((hash) => {
+        resolve(hash);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
 
 ////////// ALL EXPORTS ////////////////////////////////////////
 
 exports.postNewPassword = async (req, res, next) => {
-  const id = await SendinBlue(req.body.email);
-  req.body.id = id;
-  return res.json(req.body);
+  try {
+    const id = await SendinBlue(req.body.email);
+    req.body.id = id;
+    return res.status(200).json(req.body);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 };
 
 exports.getResetPassword = async (req, res, next) => {
@@ -76,23 +83,55 @@ exports.getResetPassword = async (req, res, next) => {
     const forgot = await Forgot.findOne({ where: { id: id } });
 
     if (forgot && forgot.isactive === true) {
-      console.log("found and active !");
-
-      //   res.redirect(
-      //     "http://127.0.0.1:3000/OPTIMIZATION_EXPENSE/views/forgotpassword.html"
-      //   );
-      res.write("<h1>This is RESET</h1>");
-      res.write(`<form action="http://localhost:5000/password/updatenewpassword" method="post">
+      res.setHeader("Content-Type", "text/html");
+      res.write("<html>");
+      res.write(`<head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f0f0f0;
+          padding: 20px;
+        }
+        h1 {
+          color: #333;
+        }
+        form {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"],
+        input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+        }
+        button[type="submit"] {
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+      </style>
+    </head>`)
+      res.write("<h1>SET NEW PASSWORD</h1>");
+      res.write(`<form action="http://65.0.180.206:5000/password/updatenewpassword" method="post">
     <input type="text" name="email" placeholder="email"><br><br>
     <input type="password" name="password" id="password" placeholder="password"><br><br>
     <input type="password" name="confirm" id="confirm" placeholder="confirm password"><br><br>
     <input type="hidden" value=${id} name="id">
     <button type="submit">Submit</button>
   </form>`);
+      res.write("</html>");
+      res.end();
     }
-    res.end();
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 };
 
@@ -114,9 +153,10 @@ exports.getResetLink = async (req, res, next) => {
       isactive: true,
     });
 
-    res.json({ msg: "reached", id: id });
+    res.status(200).json({ msg: "Link sent to email", id: id });
   } catch (err) {
-    console.log(err);
+
+    res.status(500).json(err)
   }
 };
 
@@ -134,14 +174,14 @@ exports.updateNewPassword = async (req, res, next) => {
     user = await User.findOne({ where: { email: email } });
     forgot = await Forgot.findOne({ where: { id: id } });
 
-    const saltrounds = 10;
+    const saltrounds = process.env.SALTROUNDS;
     const new_password = await HASHING(password, saltrounds);
     await user.update({ password: new_password });
-    
+
     await forgot.update({ isactive: false });
-    return res.json(req.body);
-    // res.write("<h2>Your Password has beeen reset</h2>");}
+    return res.status(200).json(req.body);
   } catch (err) {
     console.log(err);
+    res.status(500).json(err);
   }
 };

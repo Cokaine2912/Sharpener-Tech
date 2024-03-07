@@ -45,7 +45,7 @@ async function PAGEITEMS(event) {
   }
   // const ipp = document.getElementById("ipp-select");
   const response = await axios.get(
-    `http://localhost:5000/expense/alldownloads/${page}`,
+    `http://65.0.180.206:5000/expense/alldownloads/${page}`,
     { headers: { Authorization: existing_token, ipp: ipp } }
   );
   const data = response.data.data;
@@ -81,6 +81,7 @@ async function PAGEITEMS(event) {
 
   const active = document.getElementById(`page-${current}-button`);
   active.style = "color : grey ; text-decoration : none";
+  // active.disabled = true;
   const pages_info = document.getElementById("pages-info");
   pages_info.innerHTML = `Page ${current} of ${total}`;
 
@@ -108,7 +109,7 @@ if (!existing_token) {
       try {
         const token = localStorage.getItem("token");
         const bool = await axios.get(
-          "http://localhost:5000/expense/premiumness",
+          "http://65.0.180.206:5000/expense/premiumness",
           {
             headers: { Authorization: token },
           }
@@ -143,7 +144,7 @@ if (!existing_token) {
       ipp = +ipp;
     }
     const response = await axios.get(
-      "http://localhost:5000/expense/alldownloads/1",
+      "http://65.0.180.206:5000/expense/alldownloads/1",
       { headers: { Authorization: token, ipp: ipp } }
     );
     const data = response.data.data;
@@ -193,7 +194,7 @@ if (!existing_token) {
     rzp_button.onclick = async function (event) {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/purchase/premium",
+        "http://65.0.180.206:5000/purchase/premium",
         {
           headers: { Authorization: token },
         }
@@ -203,7 +204,7 @@ if (!existing_token) {
         order_id: response.data.order.id,
         handler: async function (response) {
           const update_response = await axios.post(
-            "http://localhost:5000/purchase/premium/updatetransactionstatus",
+            "http://65.0.180.206:5000/purchase/premium/updatetransactionstatus",
             {
               order_id: options.order_id,
               payment_id: response.razorpay_payment_id,
@@ -222,7 +223,7 @@ if (!existing_token) {
 
       rzp1.on("payment.failed", async function (response) {
         await axios.post(
-          "http://localhost:5000/purchase/premium/updatefailure",
+          "http://65.0.180.206:5000/purchase/premium/updatefailure",
           {
             order_id: options.order_id,
             payment_id: response.razorpay_payment_id,

@@ -5,9 +5,8 @@ function Login(event) {
     password: event.target.password.value,
   };
   axios
-    .post("http://localhost:5000/user/login", obj)
+    .post("http://65.0.180.206:5000/user/login", obj)
     .then((op) => {
-      // console.log(op.data);
       let token = op.data.token;
       if (op.data.success) {
         localStorage.setItem("token", token);
@@ -21,5 +20,5 @@ function Login(event) {
 }
 
 function forgotRedirect(event){
-  alert("Password Reset Linke sent to the ")
+  alert("Password Reset Link sent to the email")
 }

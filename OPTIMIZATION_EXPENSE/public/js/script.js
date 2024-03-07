@@ -7,7 +7,7 @@ function signupForm(event) {
     password: event.target.password.value,
   };
   axios
-    .post("http://localhost:5000/user/signup", obj)
+    .post("http://65.0.180.206:5000/user/signup", obj)
     .then((op) => {
       if (op.data.error) {
         const fields = document.getElementsByClassName("ip-fields");
